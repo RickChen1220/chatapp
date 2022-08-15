@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/firestore";
 import "firebase/auth";
@@ -18,15 +18,11 @@ firebase.initializeApp({
   measurementId: "G-LFZZCVXX8E",
 });
 
-
-
 const auth = firebase.auth();
 const firesotre = firebase.firestore();
 
-
-
 function App() {
-const [user] = useAuthState(auth);
+  const [user] = useAuthState(auth);
 
   return (
     <div className="App">
@@ -54,77 +50,64 @@ function SignOut() {
 }
 
 function ChatRoom() {
+  const dummy = useRef();
 
-  const dummy = useRef()
- 
-  const messagesRef = firesotre.collection('messages');
-  const query = messagesRef.orederBy('createdAt').limit(25);
+  const messagesRef = firesotre.collection("messages");
+  const query = messagesRef.orederBy("createdAt").limit(25);
 
-  const [messages] = useCollectionData(query,{idField:'id'});
+  const [messages] = useCollectionData(query, { idField: "id" });
 
-  const [formValue, setFormValue] = useState('');
+  const [formValue, setFormValue] = useState("");
 
   const sendMessage = async (e) => {
     e.preventDefault();
 
-    const {uid,photoURL} = auth.currentUser;
+    const { uid, photoURL } = auth.currentUser;
 
     await messagesRef.add({
-
-      text:formValue,
-      createdAt:firebase.firesotre.FieldValue.serverTimestamp(),
+      text: formValue,
+      createdAt: firebase.firesotre.FieldValue.serverTimestamp(),
       uid,
       photoURL,
-
     });
 
-    setFormValue('');
+    setFormValue("");
 
-    dummy.current.scrollIntoView({behavior: 'smooth'});
-
-  }
-
-
-   return(
-    <>
-       <main>
-        {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
-       
-       <div ref={dummy}></div>
-       
-       </main>
-      
-      <form onSubmit={sendMessage}>
-  
-        <input value={formValue} onChange={(e)=>setFormValue(e.target.value)} />
-
-        <button type="submit">Submit</button>
-
-      </form>
-
-
-    </>
-
-
-
-   )
-
-}
-
-function ChatMessage(props){
-  const {text, uid, photoURL} = props.message;
-
-  const messageClass = uid === auth.currentUser.uid ? 'sent': 'reveiced';
+    dummy.current.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-  <div className={`message ${messageClass}`}>
-  <img src={photoURL} alt='' />
-  <p>{text}</p>
-  </div>
-  )
+    <>
+      <main>
+        {messages &&
+          messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
+
+        <div ref={dummy}></div>
+      </main>
+
+      <form onSubmit={sendMessage}>
+        <input
+          value={formValue}
+          onChange={(e) => setFormValue(e.target.value)}
+        />
+
+        <button type="submit">Submit</button>
+      </form>
+    </>
+  );
 }
 
+function ChatMessage(props) {
+  const { text, uid, photoURL } = props.message;
 
+  const messageClass = uid === auth.currentUser.uid ? "sent" : "reveiced";
 
+  return (
+    <div className={`message ${messageClass}`}>
+      <img src={photoURL} alt="" />
+      <p>{text}</p>
+    </div>
+  );
+}
 
 export default App;
