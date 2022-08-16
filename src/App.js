@@ -1,12 +1,13 @@
-import React, { useRef, useState } from "react";
-import firebase from "firebase/compat/app";
-import "firebase/firestore";
-import "firebase/auth";
+import React, { useRef, useState } from 'react';
+import './App.css';
 
-import "./App.css";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
+import 'firebase/compat/analytics';
 
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 firebase.initializeApp({
   apiKey: "AIzaSyAs3eTpyrojvF-juLSYEsDpqOm3scnkCVw",
@@ -66,7 +67,7 @@ function ChatRoom() {
 
     await messagesRef.add({
       text: formValue,
-      createdAt: firebase.firesotre.FieldValue.serverTimestamp(),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       uid,
       photoURL,
     });
