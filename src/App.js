@@ -54,7 +54,7 @@ function ChatRoom() {
   const dummy = useRef();
 
   const messagesRef = firesotre.collection("messages");
-  const query = messagesRef.orederBy("createdAt").limit(25);
+  const query = messagesRef.orderBy("createdAt").limit(25);
 
   const [messages] = useCollectionData(query, { idField: "id" });
 
