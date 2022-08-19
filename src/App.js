@@ -27,8 +27,10 @@ function App() {
 
   return (
     <div className="App">
-      <header></header>
-      <SignOut />
+      <header>
+        <SignOut />
+      </header>
+      
 
       <section>{user ? <ChatRoom /> : <SignIn />}</section>
     </div>
